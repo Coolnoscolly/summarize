@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+
+  app:
+    container_name: sum_max-dev
+    image: sum_max:development
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    environment:
+      - S3_URL=${S3_URL}
+
+      -  MINIO_ENDPOINT=${MINIO_ENDPOINT}
+      -  MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      -  MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      -  MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+      -  MINIO_SECURE=${MINIO_SECURE}
+      -  MINIO_REGION=${MINIO_REGION}
+      -  MINIO_SAMPLE_FRACTION=${MINIO_SAMPLE_FRACTION}
+
+      -  OLLAMA_HOST=${OLLAMA_HOST}
+      -  OLLAMA_MODEL=${OLLAMA_MODEL}
+      -  OLLAMA_TEMPERATURE=${OLLAMA_TEMPERATURE}
+      -  OLLAMA_TOP_P=${OLLAMA_TOP_P}
+      -  OLLAMA_NUM_PREDICT_PAIR=${OLLAMA_NUM_PREDICT_PAIR}
+      -  OLLAMA_NUM_PREDICT_FINAL=${OLLAMA_NUM_PREDICT_FINAL}
+
+      -  OUTPUT_FILE=${OUTPUT_FILE}
+      -  ALLOWED_EXTENSIONS=${ALLOWED_EXTENSIONS}
+      -  MAX_CHUNK_SIZE=${MAX_CHUNK_SIZE}
+      -  CHUNK_OVERLAP=${CHUNK_OVERLAP}
+      - MAX_WORKERS=${MAX_WORKERS}
+      - SHUFFLE_CHUNKS=${SHUFFLE_CHUNKS}
+
+      - FINAL_STYLE=${FINAL_STYLE}
+      - TARGET_BULLETS_PAIR=${TARGET_BULLETS_PAIR}
+      - TARGET_BULLETS_FINAL=${TARGET_BULLETS_FINAL}
+      - MIN_FINAL_SENTENCES=${MIN_FINAL_SENTENCES}
+
+      - SYSTEM_PROMPT=${SYSTEM_PROMPT}
+      - MERGE_PROMPT=${MERGE_PROMPT}
+      - FINAL_PROMPT=${FINAL_PROMPT}
+    ports:
+      - 6000:6000
+    restart: unless-stopped
+    networks:
+      - sum-max
+    volumes:
+      - .:/app
+
+networks:
+  sum-max:
